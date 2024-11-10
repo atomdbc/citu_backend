@@ -1,9 +1,22 @@
 .
+├── README.md
+├── config
+│   └── sheets.js
 ├── controller
 │   └── waitlist.js
+├── credentials.json
+├── middlewares
+│   └── validator.js
 ├── output.txt
 ├── package-lock.json
 ├── package.json
-└── server.js
+├── routes
+│   └── waitlist.js
+├── server.js
+├── tests
+│   └── test-connection.js
+├── utils
+│   └── logger.js
+└── vercel.json
 
-2 directories, 5 files
+7 directories, 13 files

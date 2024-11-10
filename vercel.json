@@ -1,5 +1,8 @@
 {
     "version": 2,
+    "env": {
+    "GOOGLE_CREDENTIALS": "@google_credentials"
+  },
     "builds": [
      {
       "src": "app.js",

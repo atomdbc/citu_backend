@@ -1,18 +1,33 @@
-// config/sheets.js
 import { google } from 'googleapis';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import dotenv from 'dotenv';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+dotenv.config();
 
-const CREDENTIALS_PATH = join(__dirname, '../credentials.json');
+let sheets;
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: CREDENTIALS_PATH,
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
+try {
+  if (!process.env.GOOGLE_CREDENTIALS) {
+    throw new Error('GOOGLE_CREDENTIALS environment variable is not set');
+  }
 
-const sheets = google.sheets({ version: 'v4', auth });
+  const credentials = JSON.parse(
+    Buffer.from(process.env.GOOGLE_CREDENTIALS, 'base64').toString()
+  );
+
+  // Create auth client directly from credentials object
+  const auth = new google.auth.JWT(
+    credentials.client_email,
+    null,
+    credentials.private_key,
+    ['https://www.googleapis.com/auth/spreadsheets']
+  );
+
+  // Initialize sheets API
+  sheets = google.sheets({ version: 'v4', auth });
+
+} catch (error) {
+  console.error('Error initializing Google Sheets:', error);
+  throw new Error('Failed to initialize Google Sheets client: ' + error.message);
+}
 
 export default sheets;
